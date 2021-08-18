@@ -5,6 +5,7 @@
  */
 /*
  * super.c contains code to handle the super-block tables.
+ * 专门处理文件系统超级块
  */
  /*
 							超级块对象

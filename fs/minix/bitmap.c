@@ -5,6 +5,9 @@
  */
 
 /* bitmap.c contains the code that handles the inode and block bitmaps */
+/* 包括了对i节点位图和逻辑块位图进行释放和占用处理函数，操作i节点位图的函数是 free_inode()和
+ * new_inode()，操作逻辑块位图的函数是free_block()和new_block()。
+ */
 
 #ifdef MODULE
 #include <linux/module.h>

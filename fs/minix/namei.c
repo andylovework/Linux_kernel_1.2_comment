@@ -4,6 +4,11 @@
  *  Copyright (C) 1991, 1992  Linus Torvalds
  */
 
+/*
+ 主要包括了函数namei()。该函数使用iget()、iput()和bmap()将给定的文件路径名映射到其i节点
+ */
+
+
 #ifdef MODULE
 #include <linux/module.h>
 #endif

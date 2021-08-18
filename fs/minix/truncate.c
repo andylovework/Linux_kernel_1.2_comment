@@ -3,6 +3,9 @@
  *
  *  Copyright (C) 1991, 1992  Linus Torvalds
  */
+/* 
+ * 包括对数据文件长度决断为0的函数truncate()。它将i节点指定的设备上文件长度截为0。并释放文件数据占用的设备逻辑块
+ */
 
 #ifdef MODULE
 #include <linux/module.h>

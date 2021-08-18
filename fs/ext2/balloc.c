@@ -29,11 +29,12 @@
 #include <linux/sched.h>
 #include <linux/string.h>
 #include <linux/locks.h>
-
 #include <asm/bitops.h>
 
+/*判断b是不是在一个以first为头指针，长度为len的内存里*/
 #define in_range(b, first, len)		((b) >= (first) && (b) <= (first) + (len) - 1)
 
+/*获得组描述符，block_group代表是第几个组，bh参数如果不为空，就把buffer_head形式的组描述符放在bh里*/
 static struct ext2_group_desc * get_group_desc (struct super_block * sb,
 						unsigned int block_group,
 						struct buffer_head ** bh)
@@ -41,13 +42,18 @@ static struct ext2_group_desc * get_group_desc (struct super_block * sb,
 	unsigned long group_desc;
 	unsigned long desc;
 	struct ext2_group_desc * gdp;
-
+    /*如果参数大于组的数目，说明参数有问题，报错，返回NULL*/
 	if (block_group >= sb->u.ext2_sb.s_groups_count)
 		ext2_panic (sb, "get_group_desc",
 			    "block_group >= groups_count - "
 			    "block_group = %d, groups_count = %lu",
 			    block_group, sb->u.ext2_sb.s_groups_count);
-
+    /*EXT2_DESC_PER_BLOCK_BITS宏返回块拥有组描述符的数目转换成二进制位的位数，右移这些位就等于是除以
+	 *一个块拥有组描述符的数目。我猜我这么说肯定大家不懂，还是举例子吧。比如ext2的ext2_group_desc是
+	 *32字节，按照ext2的一个块有1K大小来算，一个块就有32个组描述符，所以就是5位，右移五位，除以32，
+	 *块组描述符是聚集在一起的，有几个块是专门房块组描述符的，在超级块里有记录，我们知道了是第几个块组，
+	 *但是接下来要知道是在块组描述符群组里的第几个块，比如我们要去第45个块组，45/32=1，所以就得到了是在
+	 *第二个块里，偏移就是45%32=13，也可以与位,45&（32-1）=13*/
 	group_desc = block_group / EXT2_DESC_PER_BLOCK(sb);
 	desc = block_group % EXT2_DESC_PER_BLOCK(sb);
 	if (!sb->u.ext2_sb.s_group_desc[group_desc])

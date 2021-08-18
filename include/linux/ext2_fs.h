@@ -212,17 +212,17 @@ struct ext2_group_desc
  * Structure of an inode on the disk
  */
 struct ext2_inode {
-	__u16 i_mode;		/* File mode */
-	__u16 i_uid;		/* Owner Uid */
-	__u32  i_size;		/* Size in bytes */
-	__u32  i_atime;		/* Access time */
-	__u32  i_ctime;		/* Creation time */
-	__u32  i_mtime;		/* Modification time */
-	__u32  i_dtime;		/* Deletion Time */
-	__u16 i_gid;		/* Group Id */
-	__u16 i_links_count;	/* Links count */
-	__u32  i_blocks;	/* Blocks count */
-	__u32  i_flags;		/* File flags */
+	__u16 i_mode;		/* File mode 文件模式 */
+	__u16 i_uid;		/* Owner Uid  所有者UID的低16为 */
+	__u32  i_size;		/* Size in bytes 长度，按自己计算 */
+	__u32  i_atime;		/* Access time 访问时间 */
+	__u32  i_ctime;		/* Creation time 创建时间 */
+	__u32  i_mtime;		/* Modification time 修改时间 */
+	__u32  i_dtime;		/* Deletion Time 删除时间 */
+	__u16 i_gid;		/* Group Id 组ID的低16位 */
+	__u16 i_links_count;	/* Links count 链接计数 */
+	__u32  i_blocks;	/* Blocks count 块数目*/
+	__u32  i_flags;		/* File flags 文件标志 */
 	union {
 		struct {
 			__u32  l_i_reserved1;
@@ -234,15 +234,15 @@ struct ext2_inode {
 			__u32  m_i_reserved1;
 		} masix1;
 	} osd1;				/* OS dependent 1 */
-	__u32	i_block[EXT2_N_BLOCKS];/* Pointers to blocks */
-	__u32	i_version;	/* File version (for NFS) */
-	__u32	i_file_acl;	/* File ACL */
-	__u32	i_dir_acl;	/* Directory ACL */
-	__u32	i_faddr;		/* Fragment address */
+	__u32	i_block[EXT2_N_BLOCKS];/* Pointers to blocks 块指针（块号） */
+	__u32	i_version;	/* File version (for NFS) 文件版本*/
+	__u32	i_file_acl;	/* File ACL 文件acl*/
+	__u32	i_dir_acl;	/* Directory ACL 目录acl*/
+	__u32	i_faddr;		/* Fragment address 碎片地址*/
 	union {
 		struct {
-			__u8	l_i_frag;	/* Fragment number */
-			__u8	l_i_fsize;	/* Fragment size */
+			__u8	l_i_frag;	/* Fragment number 碎片编号 */
+			__u8	l_i_fsize;	/* Fragment size 碎片长度 */
 			__u16	i_pad1;
 			__u32	l_i_reserved2[2];
 		} linux2;
@@ -328,31 +328,31 @@ struct ext2_inode {
  * Structure of the super block
  */
 struct ext2_super_block {
-	__u32	s_inodes_count;		/* Inodes count */
-	__u32	s_blocks_count;		/* Blocks count */
-	__u32	s_r_blocks_count;	/* Reserved blocks count */
-	__u32	s_free_blocks_count;	/* Free blocks count */
-	__u32	s_free_inodes_count;	/* Free inodes count */
-	__u32	s_first_data_block;	/* First Data Block */
-	__u32	s_log_block_size;	/* Block size */
-	__s32	s_log_frag_size;	/* Fragment size */
-	__u32	s_blocks_per_group;	/* # Blocks per group */
-	__u32	s_frags_per_group;	/* # Fragments per group */
-	__u32	s_inodes_per_group;	/* # Inodes per group */
-	__u32	s_mtime;		/* Mount time */
-	__u32	s_wtime;		/* Write time */
-	__u16	s_mnt_count;		/* Mount count */
-	__s16	s_max_mnt_count;	/* Maximal mount count */
-	__u16	s_magic;		/* Magic signature */
-	__u16	s_state;		/* File system state */
-	__u16	s_errors;		/* Behaviour when detecting errors */
+	__u32	s_inodes_count;		/* Inodes count */ /* inode数目 */
+	__u32	s_blocks_count;		/* Blocks count */ /* 块数目 */
+	__u32	s_r_blocks_count;	/* Reserved blocks count */ /* 已分配块的数目 */
+	__u32	s_free_blocks_count;	/* Free blocks count */ /* 空闲块数目 */
+	__u32	s_free_inodes_count;	/* Free inodes count */ /* 空闲inode数目 */
+	__u32	s_first_data_block;	/* First Data Block */ /* 第一个数据块*/
+	__u32	s_log_block_size;	/* Block size */ /* 块长度 实际长度=1<<(s_log_block_size+10) */
+	__s32	s_log_frag_size;	/* Fragment size */ /* 碎片长度 */
+	__u32	s_blocks_per_group;	/* # Blocks per group */ /* 每个块组包含的块数 */
+	__u32	s_frags_per_group;	/* # Fragments per group */ /* 每个块组包含的碎片 */
+	__u32	s_inodes_per_group;	/* # Inodes per group */ /* 每个块组包含的inode数目 */
+	__u32	s_mtime;		/* Mount time */ /* Mount时间 */
+	__u32	s_wtime;		/* Write time */ /* 写入时间 */
+	__u16	s_mnt_count;		/* Mount count */ /* Mount计数*/
+	__s16	s_max_mnt_count;	/* Maximal mount count */ /* 最大mount计数*/
+	__u16	s_magic;		/* Magic signature */ /* 魔数，标记文件系统类型 */
+	__u16	s_state;		/* File system state */ /* 文件系统状态 */
+	__u16	s_errors;		/* Behaviour when detecting errors */ /* 检测到错误时的状态 */
 	__u16	s_pad;
-	__u32	s_lastcheck;		/* time of last check */
-	__u32	s_checkinterval;	/* max. time between checks */
-	__u32	s_creator_os;		/* OS */
-	__u32	s_rev_level;		/* Revision level */
-	__u16	s_def_resuid;		/* Default uid for reserved blocks */
-	__u16	s_def_resgid;		/* Default gid for reserved blocks */
+	__u32	s_lastcheck;		/* time of last check */ /* 上一次检查时间 */
+	__u32	s_checkinterval;	/* max. time between checks */  /* 两次检查允许间隔的最长时间 */
+	__u32	s_creator_os;		/* OS */ /* 创建文件系统的OS */
+	__u32	s_rev_level;		/* Revision level */ /* 修订号 */
+	__u16	s_def_resuid;		/* Default uid for reserved blocks */ /* 能够使用保留块的默认UID */
+	__u16	s_def_resgid;		/* Default gid for reserved blocks */ /* 能够使用保留块的默认GID */
 	__u32	s_reserved[235];	/* Padding to the end of the block */
 };
 
@@ -371,8 +371,8 @@ struct ext2_super_block {
 #define EXT2_NAME_LEN 255
 
 struct ext2_dir_entry {
-	__u32	inode;			/* Inode number */
-	__u16	rec_len;		/* Directory entry length */
+	__u32	inode;			/* Inode number 指针，指向目录项的inode */
+	__u16	rec_len;		/* Directory entry length 目录项长度 */
 	__u16	name_len;		/* Name length */
 	char	name[EXT2_NAME_LEN];	/* File name */
 };

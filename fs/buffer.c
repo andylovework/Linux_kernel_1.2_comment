@@ -4,12 +4,18 @@
  *  Copyright (C) 1991, 1992  Linus Torvalds
  */
  
-//NOTE 参见“VFS 缓冲区缓存Buffer Cache实现原理剖析”文章 分析的太全面了 一万个赞！！！！
-//这里有一个值得思考的问题：为什么buffer.c文件置于fs下而不是mm下？
 /*
- *  'buffer.c' implements the buffer-cache functions. Race-conditions have
- * been avoided by NEVER letting an interrupt change a buffer (except for the
- * data, of course), but instead letting the caller do it.
+ * 用于对高数缓冲区进行操作和管理。高速缓冲区位于内核代码和主内存区之间，如下图，高速缓冲区在块设备-与
+ * 内核其他程序之间起一个桥梁作用
+ *   内核模块   高        速        缓        冲 高速缓冲        主 内 存
+ * |         |        |显存和BIOS ROM|         |       |                         |
+ * 0         end      640kb         1M        4M     5M                        16M
+*/
+
+/*
+ * 'buffer.c' 用于实现缓冲区高速缓存功能，通过不让终端处理过程改变缓冲区，而是让调用者来执行
+ * 避免克竞争条件(当然除改变数据以外)。注意！由于中断可以唤醒一个调用者，因此就需要开关中断指令(cli-sti)
+ * 序列来检测用于调用为而睡眠。但需要非常快 
  */
 
 /*

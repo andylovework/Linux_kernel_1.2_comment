@@ -4,6 +4,10 @@
  *  Copyright (C) 1991, 1992  Linus Torvalds
  */
 
+/*
+ * 包括了分配i节点函数iget()和放回对内存i节点存取函数iput()以及根据i节点信息取文件数据块在设备上对应的逻辑块号函数bmap()
+*/
+
 #ifdef MODULE
 #include <linux/module.h>
 #include <linux/version.h>
